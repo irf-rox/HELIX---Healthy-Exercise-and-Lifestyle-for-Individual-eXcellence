@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Health Advisor</title>
+</head>
+<body>
+    <h1>Health Advisor</h1>
+    <form method="POST" action="/">
+        <label for="age">Age:</label>
+        <input type="number" id="age" name="age" required><br><br>
+
+        <label for="gender">Gender:</label>
+        <select id="gender" name="gender" required>
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+        </select><br><br>
+
+        <label for="height">Height (meters):</label>
+        <input type="number" step="0.01" id="height" name="height" required><br><br>
+
+        <label for="weight">Weight (kg):</label>
+        <input type="number" step="0.1" id="weight" name="weight" required><br><br>
+
+        <label for="fitness_goal">Fitness Goal:</label>
+        <select id="fitness_goal" name="fitness_goal" required>
+            <option value="Lose weight">Lose weight</option>
+            <option value="Build muscle">Build muscle</option>
+            <option value="Maintain health">Maintain health</option>
+        </select><br><br>
+
+        <button type="submit">Submit</button>
+    </form>
+</body>
+</html>
