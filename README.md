@@ -18,3 +18,14 @@
   - Wasn't easy to find a free api key for an LLM model.
   - Need to do combine different datasets or create own dataset.
   - Implementing csv dataset with RAG isn't common.
+
+## Day 3 - 25/12/2024:
+- Finished the RAG model implementation
+- Created a customized dataset which is a markdown file.
+- Menu based approach of the application is completed.
+### Challenges:
+- The dataset had to refined many times to remove redundant data.
+- Took a lot of time to come down to the decision or idea of compiling all csv data into one markdown file.
+- Model gave no response what so ever the corrections were made at first.
+- Rephrasing the prompt format and query format was quite tiresome.
+- Infered that response should'nt be streamed after many number of attempts and debugs.
