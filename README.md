@@ -23,6 +23,7 @@
 - Finished the RAG model implementation
 - Created a customized dataset which is a markdown file.
 - Menu based approach of the application is completed.
+- Created a basic website without any styling using flask.
 ### Challenges:
 - The dataset had to refined many times to remove redundant data.
 - Took a lot of time to come down to the decision or idea of compiling all csv data into one markdown file.
