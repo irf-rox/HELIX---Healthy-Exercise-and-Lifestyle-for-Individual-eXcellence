@@ -30,3 +30,12 @@
 - Model gave no response what so ever the corrections were made at first.
 - Rephrasing the prompt format and query format was quite tiresome.
 - Infered that response should'nt be streamed after many number of attempts and debugs.
+
+## ~~Day 4 - 26/12/2024: Exam Preparation~~
+
+## Day 5 - 27/12/2024:
+- Started developing the webpage.
+- Saw tutorials to create websites with parallax effect.
+
+## Day 5 - 28/12/2024:
+- Continued working on the website.
