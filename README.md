@@ -39,3 +39,4 @@
 
 ## Day 5 - 28/12/2024:
 - Continued working on the website.
+- Completed index page.
