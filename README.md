@@ -37,6 +37,13 @@
 - Started developing the webpage.
 - Saw tutorials to create websites with parallax effect.
 
-## Day 5 - 28/12/2024:
+## Day 6 - 28/12/2024:
 - Continued working on the website.
 - Completed index page.
+
+## ~~Days 6 to 10 28/12/2024 to 01/01/2025 : College Trip~~
+
+## Day 10 - 01/01/2025:
+- Completed the frontend for the whole application.
+- Application is done.
+- Started documentation/report work.
