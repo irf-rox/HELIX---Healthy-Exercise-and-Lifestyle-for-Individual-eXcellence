@@ -3,11 +3,126 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poiret+One&display=swap" rel="stylesheet">
     <title>Fitness Plan Result</title>
 </head>
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+    }
+
+    html {
+        height: 100%;
+        overflow-x: hidden;
+        background: #D6EFD8;
+    }
+
+    .banner {
+        width: 100%;
+        height: auto;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.516);
+    }
+
+    #bgpic {
+        display: block;
+        width: 100%;
+        height: auto;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.516);
+    }
+
+    #title {
+        position: absolute;
+        top: 5%;
+        left: 13%;
+        font-size: 12em;
+        align-self: center;
+        font-family: "Poiret One", serif;
+        font-weight: 999;
+        color: white;
+        text-shadow: 0px 0px 10px rgba(0, 0, 0, 0.421);
+        font-style: normal;
+    }
+
+    .container {
+        border-radius: 20px;
+        margin: 20px auto;
+        padding: 20px;
+        background: #508D4E;
+        width: 80%;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    }
+
+    .container:hover {
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.516);
+    }
+
+    pre {
+        font-size: 1.2em;
+        font-family: "Poiret One", serif;
+        font-weight: 500;
+        color: white;
+        font-style: normal;
+        white-space: pre-wrap; /* Ensure text wraps within the div */
+    }
+
+    a {
+        display: block;
+        text-align: center;
+        margin: 20px auto;
+        padding: 10px 20px;
+        background: #345834;
+        color: white;
+        text-decoration: none;
+        font-family: "Poiret One", serif;
+        font-size: 1.2em;
+        border-radius: 10px;
+        width: 20%;
+        box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    a:hover {
+        background: #274428;
+    }
+
+    h2 {
+        /* font-size: 2em; */
+        font-family: "Poiret One", serif;
+        font-weight: 999;
+        color: white;
+        font-style: normal;
+    }
+</style>
 <body>
-    <h1>Your Fitness Plan</h1>
-    <pre>{{ result }}</pre>
+    <img src="{{ url_for('static', filename='images/resultbanner.jpg') }}" id="bgpic">
+    <h1 id="title">Here's Your Customized Fitness Plan</h1>
+
+    <div class="container">
+        <h2>Your BMI</h2><hr><br>
+        <pre>{{ result.split('Your BMI is ')[1].split('\n')[0] }}</pre>
+    </div>
+
+    <div class="container">
+        <h2>Workout Plan</h2><hr><br>
+        <pre>{{ result.split('**Workout Plan:**')[1].split('**Diet Plan:**')[0].strip() }}</pre>
+    </div>
+
+    <div class="container">
+        <h2>Diet Plan</h2><hr><br>
+        <pre>{{ result.split('**Diet Plan:**')[1].split('**Additional Tips:**')[0].strip() }}</pre>
+    </div>
+
+    <div class="container">
+        <h2>Additional Tips</h2><hr><br>
+        <pre>{{ result.split('**Additional Tips:**')[1].strip() }}</pre>
+    </div>
+
+    <br>
+
     <a href="/">Go Back</a>
+
+    <br><br><br>
 </body>
 </html>
