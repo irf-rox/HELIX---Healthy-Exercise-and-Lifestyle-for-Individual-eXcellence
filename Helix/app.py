@@ -48,9 +48,14 @@ def generate_fitness_plan(age, gender, height, weight, activity_level, fitness_g
     User Attributes:
     {query_text}
 
-    Response Requirements:
-    - Workout plan with specific exercises, durations, and intensities.
-    - Diet plan with meals, calories, and macros.
+    **Instructions:**
+    - Only respond with a fitness plan including:
+        1. Workout plan with specific exercises, durations, and intensities with each workout listed point-wise and in a detailed manner.
+        2. Diet plan with meals, calories, and macros with each food listed point-wise and include the nutrition information.
+    - Do NOT include any other information like book recommendations, unrelated advice, or general fitness trends.
+    - Format the response in plain text.
+
+    Begin the response with the physical workouts plan and then continue with the diet plan and any additional tips.
 
     Response:
     Provide a detailed response in plain text, not as a tool call or structured JSON.
@@ -67,7 +72,8 @@ def generate_fitness_plan(age, gender, height, weight, activity_level, fitness_g
 
     response_text = completion.choices[0].message.content
     #sources = [f"{doc.metadata.get('source', 'unknown')} (Example {i+1})" for i, (doc, _) in enumerate(results)]
-    formatted_response = f"\nYour BMI is {bmi}.\n{response_text}"
+    #print(sources)
+    formatted_response = f"\nYour BMI is {bmi}\n{response_text}"
     return formatted_response
 
 @app.route('/')
