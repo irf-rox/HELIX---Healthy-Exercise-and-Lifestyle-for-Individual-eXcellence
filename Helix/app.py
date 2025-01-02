@@ -1,12 +1,15 @@
+import os
 from flask import Flask, render_template, request
 from langchain_community.vectorstores import Chroma
 from langchain.embeddings import SentenceTransformerEmbeddings
 from groq import Groq
+from drive_downloader import download_chroma_from_drive
 
 app = Flask(__name__, static_folder='static')
 
-CHROMA_PATH = "chroma"
+CHROMA_PATH = "temp_chroma/chroma"
 GROQ_API_KEY = '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'
+PARENT_FOLDER_ID = "188eYmPiSfbEaRA8rpZBlTWNYIGjppLXX"
 
 groq_client = Groq(api_key=GROQ_API_KEY)
 
@@ -22,7 +25,7 @@ def generate_fitness_plan(age, gender, height, weight, activity_level, fitness_g
     - Weight: {weight} kg
     - Daily activity level: {activity_level}
     - BMI: {bmi}
-    - Fitness goal: {fitness_goal}s
+    - Fitness goal: {fitness_goal}
     Response Requirements:
     - Workout plan with specific exercises, durations, and intensities.
     - Diet plan with meals, calories, and macros.
@@ -71,13 +74,12 @@ def generate_fitness_plan(age, gender, height, weight, activity_level, fitness_g
     )
 
     response_text = completion.choices[0].message.content
-    #sources = [f"{doc.metadata.get('source', 'unknown')} (Example {i+1})" for i, (doc, _) in enumerate(results)]
-    #print(sources)
     formatted_response = f"\nYour BMI is {bmi}\n{response_text}"
     return formatted_response
 
 @app.route('/')
 def index():
+    download_chroma_from_drive(PARENT_FOLDER_ID)
     return render_template('index.html')
 
 @app.route('/result', methods=['POST'])
@@ -90,9 +92,11 @@ def result():
         activity_level = request.form['activity_level']
         fitness_goal = request.form['fitness_goal']
 
-        #print("\n\n\n\n\n\n\n",f"Age: {age}, Gender: {gender}, Height: {height}, Weight: {weight}, Activity Level: {activity_level}, Fitness Goal: {fitness_goal}")
-
         result_text = generate_fitness_plan(age, gender, height, weight, activity_level, fitness_goal)
+
+        if "Unable to find relevant context" in result_text:
+            return render_template('result.html', result=None, error_message="Sorry, we couldn't prepare a fitness plan for you. Please try again with correct details.")
+        
         return render_template('result.html', result=result_text)
 
     except Exception as e:
