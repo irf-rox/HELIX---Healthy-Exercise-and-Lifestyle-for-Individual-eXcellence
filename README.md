@@ -52,4 +52,6 @@
 - Creating correct directory structure with Google Drive API was quite troublesome.
 
 ## Day 11 - 02/01/2025:
-- Completed cloud upload of chroma db.
+- Completed cloud upload of chroma database in google drive.
+### Challenges:
+- Download ordering and file maintaining structure while downloading was tedious.
