@@ -45,5 +45,11 @@
 
 ## Day 10 - 01/01/2025:
 - Completed the frontend for the whole application.
-- Application is done.
 - Started documentation/report work.
+- Searched possible cloud storage for directories.
+### Challenges:
+- Need more uniqueness/creativity.
+- Creating correct directory structure with Google Drive API was quite troublesome.
+
+## Day 11 - 02/01/2025:
+- Completed cloud upload of chroma db.
