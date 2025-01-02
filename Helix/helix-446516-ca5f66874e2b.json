@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "helix-446516",
+  "private_key_id": "ca5f66874e2b9d17144e09a31166d53ae3249795",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDu7q5bo+GDiUYj\nnztgj2MiJoHn7gIPAEoSVVOR8i3sAnAlh2O8nbrAMU66fiVHGaSi4iztrupXHmFr\nQfNiM8YFm3cjW2ZU73v4HtPT/97bjt56spLKacKcbld5sXUBCgcjUD/8hydB/hpi\n4USSNruuXRLy5KFVAWNeUNaio2ma1mvfQZH1GJofwP8NPgodpxZNo9r+pAUIWdNQ\nhE96qzIsWnpyt7HxYf+QJQW5tAG51roSJQljDOj613qSEbFtEYJViFeCSZkLgsAr\ndFeLffPfpZYUTPNqfuBfVRVlxIqW5lIrRTK/pYcV50z3uwjQBxZU1jGeLV7VZQvD\nBz/fkaXnAgMBAAECggEAD8oAbHHewmOp5n5S3PipiZiXcQ1bX95nBq5SZwyX8eBF\nxO62rcCTYx8r0rGCiR/hFbQLwARh2/8kwbYj/Tm3b9tsLg8pXgEaMhu0NKHUYLHt\ncpimXQkY7flxfzGcFJHmRg3uWVbp4ASIsQwUQFoTLcL2Y5kULpsSE/at/r787yX0\nWy/Bxrl84vs8ENswsWbtnh4yWreYpBH6STasGHLRFecpxFxmcUH5U8Mx7Q7ICS0X\nRvD2bi0zLYzM/RTjBF7ykgE0QsHnGcDP9f5s2456Ph5PTX9ewMxSoMeM7lCPh9XP\nz8fc3ext54GjpacoH0qG1ZdWIKjSWW/Mf9N+659cAQKBgQD+9DyF/M5x/eVyf7PC\nFVDMVGpOlrVz/u6UO/jKvuqe5PpY8JnRdatP2fgLGRr5p+KmKxGpWk+JxVi6Lwwh\nUN/+Yk9HS3ZWexCgsGiE5Lqhjkc23aaplHsEeJyqKph4Lf7Y3XYBX0JhlX447MAX\nTFWu+4svhxHFcb2mulDHt69jAQKBgQDv6Z408O6y5fVs3R/iOzIBUqLPVkvDod3I\njOkGwnv8enTvGjxy+1KQcgZWqSmf3vTUyxcHp3zcPpl8QALuu303ka271DGoWdT5\naZjoN2OSpKjW3dMIZsZMeptUWeSUbn/iVWsjUhOdwwVG98fWS/Kt04yRTkkUOzZ+\n2jpQlF9Q5wKBgQDfWI58wk8IRWfvujd7WrkBhyHp3tTu3PGcIj19P2rB783whDX7\n7J06wrQs5L1g39YJw8khFuB+zMdBs11pAjR34R+aUV1FvWF/o4qsgMOOK9nvEpWi\nEVUDQbXczJvtDD4pNTjfUtgQLKn6rExLHLAjLnFsHWNQGKgPm0CQ9TVMAQKBgEoE\nHj4hEtN4pMYoVlzafGvyDa6/5fH+L0lfR8lBGTVkpkzaIEotBWTw+MmluOTMyWYZ\nHgrLfncIjRvLN9xlVZVeSWZIaeWRiWZFUNpbtEmaqUhY+XF/G7CeputYLHAqwyOV\nzM8B1HF4qFkjurB/j+hW+ugdaehm+EIcm58el2WDAoGABAS+b5fJRrZAVjHQdzOA\ndF6OcAykJaClHwflVhdDN9CcYJpuoImsp9BlJrrDXTwrNYjL4iUJPDyvrZ78um7r\ndlHau/fubQejyrX3V2TY5InuCAsV4CIWaO1Z72lDsaLR5Rfz30tLgUfTLCp0XjBu\nE+1xcPYEjLsMFtcImV6eadE=\n-----END PRIVATE KEY-----\n",
+  "client_email": "helix-db-manager@helix-446516.iam.gserviceaccount.com",
+  "client_id": "108079075238790234764",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/helix-db-manager%40helix-446516.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}
