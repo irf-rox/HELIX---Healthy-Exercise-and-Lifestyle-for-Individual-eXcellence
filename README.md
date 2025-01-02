@@ -55,3 +55,4 @@
 - Completed cloud upload of chroma database in google drive.
 ### Challenges:
 - Download ordering and file maintaining structure while downloading was tedious.
+- Tried to encrypt messages from LLM but seemed unpractical since all were taking place in the server and also splitting and encrypting the large plain text was a tedious task for encrypting fitness plan.
