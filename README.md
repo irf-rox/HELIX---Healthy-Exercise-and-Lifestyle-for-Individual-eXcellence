@@ -54,7 +54,11 @@
 ## Day 11 - 02/01/2025:
 - Completed cloud upload of chroma database in google drive.
 - Completed documentation.
+- Submitted report.
 ### Challenges:
 - Download ordering and file maintaining structure while downloading was tedious.
 - Tried to encrypt messages from LLM but seemed unpractical since all were taking place in the server and also splitting and encrypting the large plain text was a tedious task for encrypting fitness plan.
 - Covering the entire concepts into a very limited number of slides needed lot of criticism and choosing content to be explained.
+
+## Day 12 - 03/01/2025:
+- Corrected the report format and re-sbmitted the mail.
