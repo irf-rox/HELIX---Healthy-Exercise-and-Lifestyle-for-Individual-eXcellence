@@ -6,6 +6,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poiret+One&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='images/icon.png') }}">
     <title>Fitness Plan Result</title>
 </head>
 <style>
@@ -53,6 +54,7 @@
         background: #508D4E;
         width: 80%;
         box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        transition: all 0.3s ease-in-out;
     }
 
     .container:hover {
@@ -88,41 +90,57 @@
     }
 
     h2 {
-        /* font-size: 2em; */
         font-family: "Poiret One", serif;
         font-weight: 999;
         color: white;
         font-style: normal;
+    }
+
+    .error-message {
+        background-color: #f8d7da;
+        color: #721c24;
+        font-size: 1.2em;
+        font-family: "Poiret One", serif;
+        font-style: normal;
+        font-weight: 999;
+        padding: 20px;
+        border-radius: 10px;
+        text-align: center;
+        font-size: 1.2em;
     }
 </style>
 <body>
     <img src="{{ url_for('static', filename='images/resultbanner.jpg') }}" id="bgpic">
     <h1 id="title">Here's Your Customized Fitness Plan</h1>
 
+    {% if error_message %}
+    <div class="container error-message">
+        <p>{{ error_message }}</p>
+    </div>
+    {% else %}
     <div class="container">
         <h2>Your BMI</h2><hr><br>
-        <pre>{{ result.split('Your BMI is ')[1].split('\n')[0] }}</pre>
+        <pre>{{ bmi if bmi else "BMI not available" }}</pre>
     </div>
 
     <div class="container">
         <h2>Workout Plan</h2><hr><br>
-        <pre>{{ result.split('**Workout Plan:**')[1].split('**Diet Plan:**')[0].strip() }}</pre>
+        <pre>{{ workout_plan if workout_plan else "Workout plan not available" }}</pre>
     </div>
 
     <div class="container">
         <h2>Diet Plan</h2><hr><br>
-        <pre>{{ result.split('**Diet Plan:**')[1].split('**Additional Tips:**')[0].strip() }}</pre>
+        <pre>{{ diet_plan if diet_plan else "Diet plan not available" }}</pre>
     </div>
 
     <div class="container">
         <h2>Additional Tips</h2><hr><br>
-        <pre>{{ result.split('**Additional Tips:**')[1].strip() }}</pre>
+        <pre>{{ additional_tips if additional_tips else "Additional tips not available" }}</pre>
     </div>
+    {% endif %}
 
     <br>
-
     <a href="/">Go Back</a>
-
     <br><br><br>
 </body>
 </html>
