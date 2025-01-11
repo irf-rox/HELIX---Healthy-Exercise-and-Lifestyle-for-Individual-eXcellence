@@ -1,121 +1,138 @@
-from langchain_community.document_loaders import DirectoryLoader
-from langchain.text_splitter import RecursiveCharacterTextSplitter
-from langchain.schema import Document
-from langchain.vectorstores import Chroma
-from sentence_transformers import SentenceTransformer
-from langchain.embeddings.sentence_transformer import SentenceTransformerEmbeddings
-from googleapiclient.discovery import build
-from googleapiclient.http import MediaFileUpload
-from google.oauth2 import service_account
 import os
-import shutil
+from flask import Flask, render_template, request
+from langchain_community.vectorstores import Chroma
+from langchain.embeddings import SentenceTransformerEmbeddings
+from groq import Groq
+from drive_downloader import download_chroma_from_drive
 
-SCOPES = ['https://www.googleapis.com/auth/drive']
-SERVICE_ACCOUNT_FILE = 'Helix/helix-446516-badd75b8e1cc.json'
+app = Flask(__name__, static_folder='static')
+
+CHROMA_PATH = "temp_chroma/chroma"
+GROQ_API_KEY = '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'
 PARENT_FOLDER_ID = "188eYmPiSfbEaRA8rpZBlTWNYIGjppLXX"
 
-CHROMA_PATH = "chroma"
-DATA_PATH = "Dataset"
+groq_client = Groq(api_key=GROQ_API_KEY)
 
-embedding_model = SentenceTransformer("all-MiniLM-L6-v2")
+def calculate_bmi(weight, height):
+    return round(weight / (height ** 2), 2)
 
-def authenticate():
-    credentials = service_account.Credentials.from_service_account_file(SERVICE_ACCOUNT_FILE, scopes=SCOPES)
-    return credentials
+def generate_fitness_plan(age, gender, height, weight, activity_level, fitness_goal):
+    bmi = calculate_bmi(weight, height)
 
-def generate_data_store():
-    documents = load_documents()
-    chunks = split_text(documents)
-    save_to_chroma(chunks)
+    query_text = f"""
+    Create a detailed and personalized daily workout routine, a detailed diet plan and additional health tips for a {age}-year-old {gender} with:
+    - Height: {height} meters
+    - Weight: {weight} kg
+    - Daily activity level: {activity_level}
+    - BMI: {bmi}
+    - Fitness goal: {fitness_goal}
+    Response Requirements:
+    - Workout plan with specific exercises, durations, and intensities.
+    - Diet plan with meals, calories, and macros.
+    - Leave a line after each heading.
+    """
 
-def load_documents():
-    loader = DirectoryLoader(DATA_PATH, glob="*.md")
-    documents = loader.load()
-    return documents
+    embedder = SentenceTransformerEmbeddings(model_name="all-MiniLM-L6-v2")
+    db = Chroma(persist_directory=CHROMA_PATH, embedding_function=embedder)
 
-def split_text(documents: list[Document]):
-    text_splitter = RecursiveCharacterTextSplitter(
-        chunk_size=300,
-        chunk_overlap=100,
-        length_function=len,
-        add_start_index=True,
+    results = db.similarity_search_with_relevance_scores(query_text, k=3)
+    # if not results or results[0][1] < 0.5:
+    #     return "Unable to find relevant context in the database."
+    if not results or any(len(result) < 2 for result in results) or results[0][1] < 0.5:
+        return "Unable to find relevant context in the database."
+
+
+    context_points = [f"Example {i+1}: {doc.page_content}" for i, (doc, score) in enumerate(results) if score >= 0.5]
+    if not context_points:
+        return "Unable to find relevant context in the database."
+    context_text = "\n\n---\n\n".join(context_points)
+
+
+    full_prompt = f"""
+    Context:
+    {context_text}
+
+    Based on the above context, create a detailed and personalized fitness plan for the user.
+
+    User Attributes:
+    {query_text}
+
+    **Instructions:**
+    - Only respond with a fitness plan, a diet plan and some additional health tips including:
+        1. Workout plan with specific exercises, durations, and intensities with each workout listed point-wise and in a detailed manner.
+        2. Diet plan with meals, calories, and macros with each food listed point-wise and include the nutrition information.
+    - Always include the three headings workout plan, diet plan and additional tips.
+    - Do NOT include any other information like book recommendations, unrelated advice, or general fitness trends.
+    - Format the response in plain text.
+
+    Begin the response with the physical workouts plan and then continue with the diet plan and any additional tips.
+
+    Response:
+    Provide a detailed response in plain text, not as a tool call or structured JSON.
+    """
+
+    completion = groq_client.chat.completions.create(
+        model="llama-3.3-70b-versatile",
+        messages=[{"role": "user", "content": full_prompt}],
+        temperature=0.5,
+        max_tokens=1024,
+        top_p=0.65,
+        stream=False
     )
-    chunks = text_splitter.split_documents(documents)
-    return chunks
 
-def save_to_chroma(chunks: list[Document]):
-    if os.path.exists(CHROMA_PATH):
-        shutil.rmtree(CHROMA_PATH)
-    texts = [chunk.page_content for chunk in chunks]
-    metadatas = [chunk.metadata for chunk in chunks]
-    embedding_function = SentenceTransformerEmbeddings(model_name="all-MiniLM-L6-v2")
-    db = Chroma.from_texts(
-        texts=texts,
-        embedding=embedding_function,
-        metadatas=metadatas,
-        persist_directory=CHROMA_PATH,
-    )
-    db.persist()
+    response_text = completion.choices[0].message.content
+    formatted_response = f"\nYour BMI is {bmi}\n{response_text}"
+    return formatted_response
 
-def get_drive_folder_id(folder_name, parent_folder_id):
-    credentials = authenticate()
-    service = build('drive', 'v3', credentials=credentials)
-    query = f"name = '{folder_name}' and mimeType = 'application/vnd.google-apps.folder' and '{parent_folder_id}' in parents and trashed = false"
-    results = service.files().list(q=query, spaces='drive', fields="files(id, name)").execute()
-    files = results.get('files', [])
-    if files:
-        return files[0]['id']
-    return None
+@app.route('/')
+def index():
+    download_chroma_from_drive(PARENT_FOLDER_ID)
+    return render_template('index.html')
 
-def delete_drive_folder(folder_id):
-    credentials = authenticate()
-    service = build('drive', 'v3', credentials=credentials)
-    service.files().delete(fileId=folder_id).execute()
+@app.route('/result', methods=['POST'])
+def result():
+    try:
+        age = int(request.form['age'])
+        gender = request.form['gender']
+        height = float(request.form['height'])
+        weight = float(request.form['weight'])
+        activity_level = request.form['activity_level']
+        fitness_goal = request.form['fitness_goal']
 
-def upload_file_to_drive(file_path, parent_folder_id):
-    credentials = authenticate()
-    service = build('drive', 'v3', credentials=credentials)
-    file_metadata = {
-        'name': os.path.basename(file_path),
-        'parents': [parent_folder_id]
-    }
-    media = MediaFileUpload(file_path)
-    service.files().create(body=file_metadata, media_body=media).execute()
+    #     result_text = generate_fitness_plan(age, gender, height, weight, activity_level, fitness_goal)
+    #     if "Unable to find relevant context" in result_text:
+    #         return render_template('result.html', result=None, error_message="Sorry, we couldn't prepare a fitness plan for you. Please try again with correct details.")
+    #     return render_template('result.html', result=result_text)
+    # except Exception as e:
+    #     return f"An error occurred: {str(e)}"
 
-def upload_chroma_to_drive(local_chroma_path, drive_parent_folder_id):
-    credentials = authenticate()
-    service = build('drive', 'v3', credentials=credentials)
+        result_text = generate_fitness_plan(age, gender, height, weight, activity_level, fitness_goal)
+        print(result_text)
+        bmi = None
+        workout_plan = None
+        diet_plan = None
+        additional_tips = None
 
-    existing_chroma_id = get_drive_folder_id("chroma", drive_parent_folder_id)
-    if existing_chroma_id:
-        delete_drive_folder(existing_chroma_id)
+        if "Your BMI is " in result_text:
+            bmi = result_text.split("Your BMI is ")[1].split("\n")[0].strip()
+        if "**Workout Plan**" in result_text and "**Diet Plan**" in result_text:
+            workout_plan = result_text.split("**Workout Plan**")[1].split("**Diet Plan**")[0].strip()
+        if "**Diet Plan**" in result_text and "**Additional Tips**" in result_text:
+            diet_plan = result_text.split("**Diet Plan**")[1].split("**Additional Tips**")[0].strip()
+        if "**Additional Tips**" in result_text:
+            additional_tips = result_text.split("**Additional Tips**")[1].strip()
 
-    folder_metadata = {
-        'name': 'chroma',
-        'mimeType': 'application/vnd.google-apps.folder',
-        'parents': [drive_parent_folder_id]
-    }
-    chroma_folder = service.files().create(body=folder_metadata, fields="id").execute()
-    chroma_folder_id = chroma_folder['id']
+        return render_template(
+            'result.html',
+            bmi=bmi,
+            workout_plan=workout_plan,
+            diet_plan=diet_plan,
+            additional_tips=additional_tips,
+            error_message=None
+        )
+    except Exception as e:
+        return f"An error occurred: {str(e)}"
 
-    for item in os.listdir(local_chroma_path):
-        item_path = os.path.join(local_chroma_path, item)
-        if os.path.isdir(item_path):
-            subfolder_metadata = {
-                'name': item,
-                'mimeType': 'application/vnd.google-apps.folder',
-                'parents': [chroma_folder_id]
-            }
-            subfolder = service.files().create(body=subfolder_metadata, fields="id").execute()
-            subfolder_id = subfolder['id']
 
-            for sub_item in os.listdir(item_path):
-                sub_item_path = os.path.join(item_path, sub_item)
-                upload_file_to_drive(sub_item_path, subfolder_id)
-        else:
-            upload_file_to_drive(item_path, chroma_folder_id)
-
-if __name__ == "__main__":
-    generate_data_store()
-    upload_chroma_to_drive(CHROMA_PATH, PARENT_FOLDER_ID)
-    print("Created folder in Google Drive.")
+if __name__ == '__main__':
+    app.run(debug=True)
