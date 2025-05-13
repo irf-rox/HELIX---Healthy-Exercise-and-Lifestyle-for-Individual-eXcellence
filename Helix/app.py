@@ -8,7 +8,7 @@ from drive_downloader import download_chroma_from_drive
 app = Flask(__name__, static_folder='static')
 
 CHROMA_PATH = "temp_chroma/chroma"
-GROQ_API_KEY = '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'
+GROQ_API_KEY = '<your_api_key>'
 PARENT_FOLDER_ID = "188eYmPiSfbEaRA8rpZBlTWNYIGjppLXX"
 
 groq_client = Groq(api_key=GROQ_API_KEY)
