@@ -1,64 +1,106 @@
-# **_HELIX_** - Healthy Exercise and Lifestyle for Individual eXcellence
-## Developer Log
+# HELIX - Healthy Exercise and Lifestyle for Individual eXcellence 🌱💪
 
-## Day 1 - 23/12/2024:
-- Researched about given model suggestions and other models.
-- Learnt about RAG (Retrieving Augmented Generation) Model and that it might suit the solution better.
-- Learnt about the difference between transformer models and RAG models.
-- Explored datasets.
-### Challenges:
-- Found dataset that is only partially suitable.
-- Need element of novelty!!!
+## Overview 🚀
 
-## Day 2 - 24/12/2024:
-- Started looking into the working or how RAG models work.
-- Explored various available LLMs.
-- Finalized LLM model to be used - Llama3 from Groq
-### Challenges:
-  - Wasn't easy to find a free api key for an LLM model.
-  - Need to do combine different datasets or create own dataset.
-  - Implementing csv dataset with RAG isn't common.
+HELIX is a personalized web application designed to help users maintain a healthy lifestyle by generating **fitness plans**, **diet recommendations**, and **lifestyle tips**. The application uses **Retrieving Augmented Generation (RAG)** models and **Llama3** from **Groq** to create customized suggestions based on user data. Built with **Flask**, HELIX also integrates **Google Drive API** to store **vector embeddings** for efficient data retrieval.
 
-## Day 3 - 25/12/2024:
-- Finished the RAG model implementation
-- Created a customized dataset which is a markdown file.
-- Menu based approach of the application is completed.
-- Created a basic website without any styling using flask.
-### Challenges:
-- The dataset had to refined many times to remove redundant data.
-- Took a lot of time to come down to the decision or idea of compiling all csv data into one markdown file.
-- Model gave no response what so ever the corrections were made at first.
-- Rephrasing the prompt format and query format was quite tiresome.
-- Infered that response should'nt be streamed after many number of attempts and debugs.
+## Key Features 🌟
 
-## ~~Day 4 - 26/12/2024: Exam Preparation~~
+* **Personalized Fitness Plans**: Tailored workout routines based on your goals and health data 🏋️‍♂️
+* **Diet Recommendations**: Meal plans designed to complement your fitness objectives 🍏🥗
+* **Lifestyle Tips**: Expert advice for improving mental and physical well-being 🧘‍♀️
+* **RAG Model Integration**: Generate recommendations using advanced models like Llama3 🤖
+* **Cloud Storage for Embeddings**: Google Drive is used to store **vector embeddings**, allowing fast retrieval and cloud synchronization 📂
+* **Web Interface**: A user-friendly web interface built using Flask 💻
 
-## Day 5 - 27/12/2024:
-- Started developing the webpage.
-- Saw tutorials to create websites with parallax effect.
+## How It Works 🔧
 
-## Day 6 - 28/12/2024:
-- Continued working on the website.
-- Completed index page.
+1. **User Input**: Users input their personal data such as age, weight, and health goals.
+2. **Data Processing**: The RAG model processes the input and retrieves relevant information to generate personalized plans.
+3. **Vector Embedding Storage**: Vector embeddings, which represent fitness data and recommendations, are stored in **Google Drive** to optimize retrieval and recommendation generation.
+4. **Personalized Recommendations**: Users receive custom fitness plans, diet suggestions, and lifestyle tips based on their data.
+5. **Cloud Sync**: Embeddings are synchronized with Google Drive for efficient data retrieval.
 
-## ~~Days 6 to 10 28/12/2024 to 01/01/2025 : College Trip~~
+## Installation Guide ⚙️
 
-## Day 10 - 01/01/2025:
-- Completed the frontend for the whole application.
-- Started documentation/report work.
-- Searched possible cloud storage for directories.
-### Challenges:
-- Need more uniqueness/creativity.
-- Creating correct directory structure with Google Drive API was quite troublesome.
+1. **Clone the Repository**:
 
-## Day 11 - 02/01/2025:
-- Completed cloud upload of chroma database in google drive.
-- Completed documentation.
-- Submitted report.
-### Challenges:
-- Download ordering and file maintaining structure while downloading was tedious.
-- Tried to encrypt messages from LLM but seemed unpractical since all were taking place in the server and also splitting and encrypting the large plain text was a tedious task for encrypting fitness plan.
-- Covering the entire concepts into a very limited number of slides needed lot of criticism and choosing content to be explained.
+   ```bash
+   git clone https://github.com/irf-rox/HELIX---Healthy-Exercise-and-Lifestyle-for-Individual-eXcellence.git
+   cd HELIX---Healthy-Exercise-and-Lifestyle-for-Individual-eXcellence/Helix
+   ```
 
-## Day 12 - 03/01/2025:
-- Corrected the report format and re-sbmitted the mail.
+2. **Install Required Dependencies**:
+   Use pip to install the necessary dependencies:
+
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+3. **Google Drive API Setup**:
+
+   * Visit the [Google Developers Console](https://console.developers.google.com/).
+   * Create a new project and enable the **Google Drive API**.
+   * Download the **credentials file** (`credentials.json`).
+   * Follow the [Google Drive API Python Quickstart](https://developers.google.com/drive/api/v3/quickstart-python) to set up the credentials.
+
+   Place the `credentials.json` file in the project directory.
+
+4. **Run the Flask Application**:
+   Start the Flask app:
+
+   ```bash
+   python app.py
+   ```
+
+5. **Access the Application**:
+   Open your browser and go to `http://127.0.0.1:5000` to start using HELIX.
+
+## Usage 💡
+
+Once the app is up and running, use the following features:
+
+1. **Input Your Data**: Enter your health data, including age, weight, and fitness goals.
+2. **Choose Preferences**: Select the type of fitness plans, diet plans, and lifestyle tips you are interested in.
+3. **Receive Recommendations**: Based on the data and preferences, the app will provide:
+
+   * **Fitness Plan**: A workout schedule designed for your specific goals.
+   * **Diet Plan**: Meal recommendations to complement your fitness routine.
+   * **Lifestyle Tips**: Suggestions to help improve mental and physical health.
+4. **Cloud Storage**: The app uses Google Drive to store vector embeddings of the data, ensuring efficient and quick retrieval for future sessions.
+
+## System Architecture 🏗️
+
+The application consists of several key components:
+
+* **Flask**: Manages the web interface, routing, and user inputs.
+* **RAG Model**: The core component that processes user input and generates recommendations.
+* **Sentence Transformers**: Used for transforming textual data into vector embeddings.
+* **Google Drive API**: Stores vector embeddings, ensuring efficient data management and retrieval.
+
+## Cloud Storage for Vector Embeddings ☁️
+
+Google Drive is used exclusively for storing **vector embeddings** — the mathematical representations of user preferences, fitness plans, and recommendations. The embeddings are stored in specific directories on Google Drive, allowing for fast retrieval and seamless synchronization across sessions.
+
+### Setting Up Google Drive Sync
+
+1. **Authentication**: The app requires user authentication to access Google Drive.
+2. **Embedding Storage**: After generating the embeddings, they are saved in a directory structure within Google Drive, such as:
+
+   * `/HELIX/Vector_Embeddings/`
+
+## Challenges Faced and Solutions 💭
+
+1. **Dataset Preparation**: The dataset had to be cleaned and transformed to fit the RAG model requirements. It involved removing redundant data and converting it into a Markdown format.
+2. **API Key Setup**: Initially, obtaining a free API key for Llama3 was challenging, but after some research, I managed to secure one.
+3. **Google Drive Integration**: Setting up and organizing Google Drive for embedding storage was complex but necessary for efficient data retrieval.
+
+## Future Improvements 🔧
+
+* **UI Enhancements**: Improve the user interface to make it more visually appealing and interactive.
+* **Advanced Features**: Add functionality to track progress over time and provide ongoing recommendations.
+* **Integration with Wearables**: Implement integration with fitness trackers to automatically update workout data.
+
+## Contributing 🤝
+
+Contributions are always welcome! If you'd like to contribute, fork the repository, make your changes, and submit a pull request.
